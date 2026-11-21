@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>MEGA SMART - تنزيل أحدث إصدار</title>
+  <style>
+    :root{color-scheme:dark;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif}
+    *{box-sizing:border-box}body{background:radial-gradient(circle at 50% -20%,#472037,#101118 65%);color:#f5f6fa;min-height:100vh;margin:0;display:grid;place-items:center;padding:20px}
+    main{width:min(100%,460px);text-align:center;border:1px solid #494452;border-radius:24px;padding:38px 26px;background:#1a1a23;box-shadow:0 18px 60px #0007}
+    h1{font-size:clamp(28px,6vw,38px);margin:0 0 8px}h1 span{color:#ff345d}
+    p{line-height:1.8;color:#b9b7c4;margin:8px 0 20px}
+    a.button{display:block;background:#ff3158;color:white;text-decoration:none;font-weight:700;border-radius:12px;padding:15px 14px;margin-top:22px}
+    a.secondary{color:#c7cada;text-decoration:underline;font-size:13px}
+    #status{font-size:14px;min-height:22px}footer{font-size:12px;color:#92909f;margin-top:16px}
+  </style>
+</head>
+<body>
+<main>
+  <h1>MEGA <span>SMART</span></h1>
+  <p>تحميل أحدث إصدار لأجهزة Android وAndroid TV</p>
+  <p id="status" aria-live="polite">جارٍ تحديد أحدث إصدار...</p>
+  <a class="button" id="download" href="https://github.com/magiko783-cloud/-MEGA-SMART-UPDATES/releases/latest">فتح صفحة التحميل</a>
+  <footer>الرابط ثابت، ويتم تحديد ملف APK من ملف التحديث الرسمي.</footer>
+  <a class="secondary" href="https://github.com/magiko783-cloud/-MEGA-SMART-UPDATES/releases/latest">صفحة الإصدارات على GitHub</a>
+</main>
+<script>
+(async()=>{
+  const status=document.getElementById('status'),btn=document.getElementById('download');
+  const manifest='https://raw.githubusercontent.com/magiko783-cloud/-MEGA-SMART-UPDATES/main/update.json';
+  try{
+    const response=await fetch(manifest+'?t='+Date.now(),{cache:'no-store'});
+    if(!response.ok)throw new Error('manifest unavailable');
+    const data=await response.json();
+    const url=new URL(data.downloadUrl);
+    if(url.protocol!=='https:'||url.hostname!=='github.com'||!url.pathname.startsWith('/magiko783-cloud/-MEGA-SMART-UPDATES/releases/download/')||!url.pathname.toLowerCase().endsWith('.apk'))throw new Error('invalid download URL');
+    btn.href=url.href;btn.textContent='تحميل MEGA SMART '+String(data.versionName||'');
+    status.textContent='أحدث إصدار: '+String(data.versionName||'')+' — سيبدأ التنزيل تلقائيًا.';
+    window.location.replace(url.href);
+  }catch(err){
+    status.textContent='تعذّر بدء التنزيل تلقائيًا. افتح صفحة الإصدارات لاختيار أحدث APK.';
+  }
+})();
+</script>
+</body></html>
